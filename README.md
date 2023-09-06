@@ -16,18 +16,18 @@ I am using a Seeed Xiao M0 dev board for this project. It should work on any Ard
 ## Usage
 
 Turn the encoder to access different pages. Defaults to page 1 on boot which is a simple glider. The pages are as follows:
-	- page 0 -- generates a random grid and runs the simulation. If the simulation becomes periodic, it generates a new grid after a few seconds
-	- pages 1-3 -- pre-loaded grids. Can be changed in the code by changing binary data in p1, p2, and p3 arrays
-	- pages 4-6 -- grids saved from page 0
+- page 0 -- generates a random grid and runs the simulation. If the simulation becomes periodic, it generates a new grid after a few seconds
+- pages 1-3 -- pre-loaded grids. Can be changed in the code by changing binary data in p1, p2, and p3 arrays
+- pages 4-6 -- grids saved from page 0
 
 Encoder button:
-	- when on page 0, pressing the button saves the initial random grid of the current simulation to page 4, 5, or 6, cycling through
-	- when on any other page, pressing the button will go to page 0, generating a new grid
-	- if button is held, potentiometer will control brightness
+- when on page 0, pressing the button saves the initial random grid of the current simulation to page 4, 5, or 6, cycling through
+- when on any other page, pressing the button will go to page 0, generating a new grid
+- if button is held, potentiometer will control brightness
 
 Potentiometer:
-	- controls the speed of the simulation
-	- controls brightness while the encoder button is held
+- controls the speed of the simulation
+- controls brightness while the encoder button is held
 
 
 ## Circuit
