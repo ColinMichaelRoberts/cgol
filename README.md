@@ -8,7 +8,7 @@ The rules are as follows:
 2. Any dead cell with three live neighbours becomes a live cell.
 3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 
-https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+Read more about Conway's Game of Life [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 
 I am using a Seeed Xiao M0 dev board for this project. It should work on any Arduino compatible board with enough pins and at least 2 interrupt pins.
 
@@ -16,70 +16,68 @@ I am using a Seeed Xiao M0 dev board for this project. It should work on any Ard
 ## Usage
 
 Turn the encoder to access different pages. Defaults to page 1 on boot which is a simple glider. The pages are as follows:
-  -page 0 -- generates a random grid and runs the simulation. If the simulation becomes periodic, it generates a new grid after a few seconds
-  -pages 1-3 -- pre-loaded grids. Can be changed in the code by changing binary data in p1, p2, and p3 arrays
-  -pages 4-6 -- grids saved from page 0
+	- page 0 -- generates a random grid and runs the simulation. If the simulation becomes periodic, it generates a new grid after a few seconds
+	- pages 1-3 -- pre-loaded grids. Can be changed in the code by changing binary data in p1, p2, and p3 arrays
+	- pages 4-6 -- grids saved from page 0
+
 Encoder button:
-  -when on page 0, pressing the button saves the initial random grid of the current simulation to page 4, 5, or 6, cycling through
-  -when on any other page, pressing the button will go to page 0, generating a new grid
-  -if button is held, potentiometer will control brightness
+	- when on page 0, pressing the button saves the initial random grid of the current simulation to page 4, 5, or 6, cycling through
+	- when on any other page, pressing the button will go to page 0, generating a new grid
+	- if button is held, potentiometer will control brightness
+
 Potentiometer:
-  -controls the speed of the simulation
-  -controls brightness while the encoder button is held
+	- controls the speed of the simulation
+	- controls brightness while the encoder button is held
 
 
 ## Circuit
 
--hardware:
-  -Seeed Xiao M0
-  -MAX7219 8x8 LED dot matrix display
-  -KY-040 rotary encoder
-  -10k potentiometer
-  -5v power supply module
-  -12v dc power supply
+- [ ] build circuit diagram
 
--12v dc power power supply in to 5v dc converter
--converter 5v output to breadboard power rail
--converter gnd to breadboard ground rail
+Hardware:
+- Seeed Xiao M0
+- MAX7219 8x8 LED dot matrix display
+- KY-040 rotary encoder
+- 10k potentiometer
+- 5v power supply module
+- 12v dc power supply
 
--Xiao 5v to 5v power rail
--Xiao gnd to ground rail
+Connections:
+- 12v dc power power supply in to 5v dc converter
+- converter 5v output to breadboard power rail
+- converter gnd to breadboard ground rail
 
--4 8x8 LED matrices on a breakout board with MAX7219 are wired in series, numbered as follows:
- ________  ________ 
- |      |==|      |=
- |   3  |==|   2  |=
- |______|==|______|=
- ________  ________ 
-=|      |==|      |
-=|   1  |==|   0  |
-=|______|==|______|
+- Xiao 5v to 5v power rail
+- Xiao gnd to ground rail
 
--matrix 0 data pin to Xiao pin 8
--matrix 0 clk pin to Xiao pin 9
--matrix 0 cs pin to Xiao pin 10
--matrix 0 vcc to 5v power rail
--matrix 0 gnd to ground rail
+- 4 8x8 LED matrices on a breakout board with MAX7219 are wired in series
+- matrices are ordered 0, 1, 2, 3, wired bottom right, bottom left, top right, top left, respectively
 
--potentiometer wiper to Xiao pin 3
--potentiometer power to Xiao 3.3v
--potentiometer ground to Xiao gnd
+- matrix 0 data pin to Xiao pin 8
+- matrix 0 clk pin to Xiao pin 9
+- matrix 0 cs pin to Xiao pin 10
+- matrix 0 vcc to 5v power rail
+- matrix 0 gnd to ground rail
 
--encoder clk pin to Xiao pin 2
--encoder dt pin to Xiao pin 4
--encoder sw pin to Xiao pin 1
--encoder + to 5v power rail
--encoder gnd to ground rail
+- potentiometer wiper to Xiao pin 3
+- potentiometer power to Xiao 3.3v
+- potentiometer ground to Xiao gnd
+
+- encoder clk pin to Xiao pin 2
+- encoder dt pin to Xiao pin 4
+- encoder sw pin to Xiao pin 1
+- encoder + to 5v power rail
+- encoder gnd to ground rail
 
 
 ## TO DO
 
--optimize encoder
--utilize EEPROM to save grids through power cycle
--build circuit diagram and get a pcb printed
--redesign 3d-printed case
--build freewire version?
--add more functionality, draw mode, universe wrap toggle, different scan modes
+- optimize encoder
+- utilize EEPROM to save grids through power cycle
+- build circuit diagram and get a pcb printed
+- redesign 3d-printed case
+- build freewire version?
+- add more functionality, draw mode, universe wrap toggle, different scan modes
 
 
 ## License
@@ -107,4 +105,6 @@ Library Homepage: https://github.com/JChristensen/JC_Button
 
 ## Contact
 
-https://colinmichaelroberts.com/
+https://colinmichaelroberts.com/contact
+
+Visit my [homepage](https://colinmichaelroberts.com) for other projects!
