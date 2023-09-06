@@ -6,7 +6,9 @@ All rights reserved.
 This source code is licensed under the MIT license found in the
 LICENSE file in the root directory of this source tree. 
 
-///////////
+https://colinmichaelroberts.com
+
+/////////   DESCRIPTION   /////////
 
 An Arduino program that simulates Conway's Game of Life on a 16x16 LED grid using an Arduino board. 
 The simulation showcases the emergence of patterns and life-like behaviors based on simple cellular automaton rules.
@@ -18,21 +20,73 @@ The rules are as follows:
 
 https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
-I am using a Seeed Xiao M0 dev board for this project.
+I am using a Seeed Xiao M0 dev board for this project. It should work on any Arduino compatible board with enough pins and at least 2 interrupt pins.
 
-CURRENT FEATURES:
--3 preloaded grids when the encoder is turned to 1-3
--save random grids by pressing a button on a random grid, can be accessed later by turning encoder to 4-6
--generates random grid when the encoder is turned to 0 (default value 1) or by pressing the button on a preloaded or saved grid
--adjust refresh rate by turning the knob
--adjust brightness by turning the knob while holding down the encoder button
--if a random grid becomes periodic (including gliders) it will generate a new random grid after a bit
+USAGE:
+-Turn the encoder to access different pages. Defaults to page 1 on boot which is a simple glider. The pages are as follows:
+  -page 0 -- generates a random grid and runs the simulation. If the simulation becomes periodic, it generates a new grid after a few seconds
+  -pages 1-3 -- pre-loaded grids. Can be changed in the code by changing binary data in p1, p2, and p3 arrays
+  -pages 4-6 -- grids saved from page 0
+-encoder button:
+  -when on page 0, pressing the button saves the initial random grid of the current simulation to page 4, 5, or 6, cycling through
+  -when on any other page, pressing the button will go to page 0, generating a new grid
+  -if button is held, potentiometer will control brightness
+-potentiometer:
+  -controls the speed of the simulation
+  -controls brightness while the encoder button is held
 
-THINGS TO DO:
+TO DO:
 -optimize encoder
+-utilize EEPROM (if this board has one) to save random grids even when powered off
+-create circuit diagram and get a pcb printed
+-redesign case?
+-build freewire version?
 -draw mode?
 -universe wrap toggle?
 -slow scan mode, horizontal, vertical, diagonal, middle out?
+
+/////////   CIRCUIT   /////////
+
+-hardware:
+  -Seeed Xiao M0
+  -MAX7219 8x8 LED dot matrix display
+  -KY-040 rotary encoder
+  -10k potentiometer
+  -5v power supply module
+  -12v dc power supply
+
+-12v dc power power supply in to 5v dc converter
+-converter 5v output to breadboard power rail
+-converter gnd to breadboard ground rail
+
+-Xiao 5v to 5v power rail
+-Xiao gnd to ground rail
+
+-4 8x8 LED matrices on a breakout board with MAX7219 are wired in series, numbered as follows:
+ ________  ________ 
+ |      |==|      |=
+ |   3  |==|   2  |=
+ |______|==|______|=
+ ________  ________ 
+=|      |==|      |
+=|   1  |==|   0  |
+=|______|==|______|
+
+-matrix 0 data pin to Xiao pin 8
+-matrix 0 clk pin to Xiao pin 9
+-matrix 0 cs pin to Xiao pin 10
+-matrix 0 vcc to 5v power rail
+-matrix 0 gnd to ground rail
+
+-potentiometer wiper to Xiao pin 3
+-potentiometer power to Xiao 3.3v
+-potentiometer ground to Xiao gnd
+
+-encoder clk pin to Xiao pin 2
+-encoder dt pin to Xiao pin 4
+-encoder sw pin to Xiao pin 1
+-encoder + to 5v power rail
+-encoder gnd to ground rail
 
 */
 
@@ -47,11 +101,14 @@ THINGS TO DO:
 
 LedControl mat = LedControl(8, 9, 10, 4);  // led matrix definition
 
-const int pot = 3;  // potentiometer for refreshRate
-int potVal = 0;     // variable for potentiometer
+const int pot = 3;                // potentiometer for refreshRate
+int potVal = 0;                   // variable for potentiometer
+int minSpeed = 42;                // min and max refresh rate in ms, controlled by potentiometer
+int maxSpeed = 2500;
 int brightness;
+int buttonLongPress = 500;        // amount of time the encoder button needs to be pressed to update brightness
 
-const int enc1 = 2;  // encoder interrupt pins
+const int enc1 = 2;               // encoder interrupt pins
 const int enc2 = 4;
 Rotary enc = Rotary(enc1, enc2);  // encoder definition
 Button butt1(1, 40);              // encoder button
@@ -148,9 +205,9 @@ unsigned int p4[n][x];
 unsigned int p5[n][x];
 unsigned int p6[n][x];
 /* draw mode grids */
-unsigned int p7[n][x];
-unsigned int p8[n][x];
-unsigned int p9[n][x];
+// unsigned int p7[n][x];
+// unsigned int p8[n][x];
+// unsigned int p9[n][x];
 /* ripple grids */
 unsigned int rip[15][n][x] = { { { 0b00000000, 0b00000000 },
                                  { 0b00000000, 0b00000000 },
@@ -502,10 +559,10 @@ void readPot() {
   */
 
   potVal = analogRead(pot);
-  refreshRate = map(potVal, 970, 10, 42, 2500);
+  refreshRate = map(potVal, 970, 10, minSpeed, maxSpeed);
   refreshRate = constrain(refreshRate, 42, 2500);
 
-  if (butt1.pressedFor(300)) {
+  if (butt1.pressedFor(buttonLongPress)) {
     brightness = map(potVal, 0, 970, 0, 15);
     for (int i = 0; i < (x * y); i++) {
       mat.setIntensity(i, brightness);
@@ -668,7 +725,7 @@ bool checkPeriodic() {
   memmove(r2, r1, sizeof(r1));
 
   for (int i = 0; i < n; i++) {
-    r1[i] = (a[i][0] << 8) + a[i][1];  // something
+    r1[i] = (a[i][0] << 8) + a[i][1];  // convert a[][] array into a 1-dimensional array for easier comparison
   }
 
   int check1 = memcmp(r1, r2, sizeof(r1));  // check for repetition
