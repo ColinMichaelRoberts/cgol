@@ -102,11 +102,6 @@ TO DO:
 LedControl mat = LedControl(8, 9, 10, 4);  // led matrix definition
 
 const int pot = 3;                // potentiometer for refreshRate
-int potVal = 0;                   // variable for potentiometer
-int minSpeed = 42;                // min and max refresh rate in ms, controlled by potentiometer
-int maxSpeed = 2500;
-int brightness;
-int buttonLongPress = 500;        // amount of time the encoder button needs to be pressed to update brightness
 
 const int enc1 = 2;               // encoder interrupt pins
 const int enc2 = 4;
@@ -114,6 +109,12 @@ Rotary enc = Rotary(enc1, enc2);  // encoder definition
 Button butt1(1, 40);              // encoder button
 
 /////////   vARIABLES   /////////
+
+int potVal = 0;                   // variable for potentiometer
+int minSpeed = 42;                // min and max refresh rate in ms, controlled by potentiometer
+int maxSpeed = 2500;
+int brightness;
+int buttonLongPress = 500;        // amount of time the encoder button needs to be pressed to update brightness
 
 int refreshRate = 100;                 // refresh rate variable in ms, controlled by potentiometer
 unsigned long periodicTimeout = 5000;  // timeout for a periodic grid to reset
@@ -528,7 +529,7 @@ void loop() {
   current = millis();
 
   if (current - previous >= refreshRate) {
-    // Serial.print(potVal);
+    // Serial.println(potVal);
     // Serial.print(" - "); 
     // Serial.println(refreshRate);
 
@@ -538,11 +539,13 @@ void loop() {
 
     timeoutCurrent = millis();
 
-    if (periodic == false) {
-      checkPeriodic();
-    } else {
-      if (timeoutCurrent - timeoutPrevious >= periodicTimeout) {
-        patterns();
+    if (patternSel != 1 || patternSel != 2 || patternSel != 3) {
+      if (periodic == false) {
+        checkPeriodic();
+      } else {
+        if (timeoutCurrent - timeoutPrevious >= periodicTimeout) {
+          patterns();
+        }
       }
     }
   }
@@ -582,7 +585,7 @@ void readButt() {
   if (butt1.wasPressed()) {
     if (patternSel == 0) {
       int c = counter % 3;
-      Serial.println(c);
+      // Serial.println(c);
       if (c == 0) {
         memcpy(p4, mem, sizeof(mem));
         counter++;
@@ -766,37 +769,46 @@ void pattern() {
 
 void patterns() {
   if (patternSel == 0) {
-    periodic = false;
     generateData();
     updateDisplay(a);
+    periodic = false;
+    g = 0;
     previous = current;
   } else if (patternSel == 1) {
     memcpy(a, p1, sizeof(a));
     updateDisplay(a);
+    periodic = false;
+    g = 0;
     previous = current;
   } else if (patternSel == 2) {
     memcpy(a, p2, sizeof(a));
     updateDisplay(a);
+    periodic = false;
+    g = 0;
     previous = current;
   } else if (patternSel == 3) {
     memcpy(a, p3, sizeof(a));
     updateDisplay(a);
     periodic = false;
+    g = 0;
     previous = current;
   } else if (patternSel == 4) {
     memcpy(a, p4, sizeof(a));
     updateDisplay(a);
     periodic = false;
+    g = 0;
     previous = current;
   } else if (patternSel == 5) {
     memcpy(a, p5, sizeof(a));
     updateDisplay(a);
     periodic = false;
+    g = 0;
     previous = current;
   } else if (patternSel == 6) {
     memcpy(a, p6, sizeof(a));
     updateDisplay(a);
     periodic = false;
+    g = 0;
     previous = current;
     // } else if (patternSel == 7) {
     //   memcpy(a, p7, sizeof(a));

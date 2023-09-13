@@ -10,6 +10,8 @@ The rules are as follows:
 
 Read more about Conway's Game of Life [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 
+![Game of Life simulation LED display](/media/cgol-1.jpg)
+
 I am using a Seeed Xiao M0 dev board for this project. It should work on any Arduino compatible board with enough pins and at least 2 interrupt pins.
 
 
@@ -29,10 +31,14 @@ Potentiometer:
 - controls the speed of the simulation
 - controls brightness while the encoder button is held
 
+![Link to youtube video explaining device function]()
+
 
 ## Circuit
 
 - [ ] build circuit diagram
+
+![Game of Life internal circuit](/media/cgol-open.jpg)
 
 Hardware:
 - Seeed Xiao M0
@@ -78,6 +84,8 @@ Connections:
 - redesign 3d-printed case
 - build freewire version?
 - add more functionality, draw mode, universe wrap toggle, different scan modes
+
+![Game of Life LEDs close-up](/media/cgol-2.jpg)
 
 
 ## License
