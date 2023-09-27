@@ -36,7 +36,7 @@ Potentiometer:
 
 ## Circuit
 
-- [ ] build circuit diagram
+- [x] build circuit diagram
 
 ![Game of Life internal circuit](/media/cgol-open.jpg)
 
@@ -48,13 +48,11 @@ Hardware:
 - 5v power supply module
 - 12v dc power supply
 
-Connections:
-- 12v dc power power supply in to 5v dc converter
-- converter 5v output to breadboard power rail
-- converter gnd to breadboard ground rail
+![Circuit schematic](/media/cgol-schematic.jpg)
 
-- Xiao 5v to 5v power rail
-- Xiao gnd to ground rail
+* note: everything is 5v except potentiometer on 3.3v from Xiao
+
+Connections:
 
 - 4 8x8 LED matrices on a breakout board with MAX7219 are wired in series
 - matrices are ordered 0, 1, 2, 3, wired bottom right, bottom left, top right, top left, respectively
@@ -62,18 +60,12 @@ Connections:
 - matrix 0 data pin to Xiao pin 8
 - matrix 0 clk pin to Xiao pin 9
 - matrix 0 cs pin to Xiao pin 10
-- matrix 0 vcc to 5v power rail
-- matrix 0 gnd to ground rail
 
 - potentiometer wiper to Xiao pin 3
-- potentiometer power to Xiao 3.3v
-- potentiometer ground to Xiao gnd
 
 - encoder clk pin to Xiao pin 2
 - encoder dt pin to Xiao pin 4
 - encoder sw pin to Xiao pin 1
-- encoder + to 5v power rail
-- encoder gnd to ground rail
 
 
 ## TO DO
