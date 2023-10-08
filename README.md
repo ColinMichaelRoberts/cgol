@@ -31,12 +31,10 @@ Potentiometer:
 - controls the speed of the simulation
 - controls brightness while the encoder button is held
 
-![Link to youtube video explaining device function]()
+Check out my video on the project [here](https://www.youtube.com/watch?v=iLSJuxAfPZc)
 
 
 ## Circuit
-
-- [x] build circuit diagram
 
 ![Game of Life internal circuit](/media/cgol-open.jpg)
 
